@@ -11,5 +11,6 @@ public interface ProductService {
 	ProductModelRespo updateProduct(String productId,ProductEntity product);
 	String deleteProduct(String productId);
 	List<ProductEntity> getProducts(int page,int limit);
+	ProductModelRespo getProduct(String productName);
 	
 }

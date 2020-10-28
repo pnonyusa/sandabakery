@@ -84,4 +84,12 @@ public class ProductServiceImple implements  ProductService {
 		return products;
 	}
 
+	@Override
+	public ProductModelRespo getProduct(String productName) {
+		// TODO Auto-generated method stub
+		ProductEntity product=productRepository.findByProductName(productName);
+		if(product==null)throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessages());
+		return new ModelMapper().map(product, ProductModelRespo.class);
+	}
+
 }

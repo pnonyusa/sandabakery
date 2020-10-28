@@ -6,6 +6,7 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,21 +31,21 @@ public class ProductController {
 	ProductService productService;
 	
 	//myproduct
-	@PostMapping(path = "/addproduct", consumes ="application/json", produces = "application/json")
+	@PostMapping(path = "/addproduct", consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
 	
 	public ResponseEntity<ProductModelRespo> saveProduct(@RequestBody ProductEntity product) {
 				return new ResponseEntity<>(productService.addProduct(product),HttpStatus.OK);
 	}
 	
 	
-	@PutMapping(path="/updateproduct/{id}",consumes="application/json",produces="application/json")
+	@PutMapping(path="/updateproduct/{id}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
 	
 	public ResponseEntity<ProductModelRespo> updateProduct(@PathVariable String id,@RequestBody ProductEntity product){
 		return new ResponseEntity<>(productService.updateProduct(id, product),HttpStatus.OK);
 	}
 	
 	
-	@DeleteMapping(path="/deleteProduct/{id}",consumes="application/json",produces="appliaction/json")
+	@DeleteMapping(path="/deleteProduct/{id}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
 	
 	public String deleteProduct(@PathVariable String id) {
 		     
@@ -53,7 +54,7 @@ public class ProductController {
 	}
 	
 	
-	@GetMapping(consumes ="application/json", produces = "application/json")
+	@GetMapping(consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
 	
 	public List<ProductModelRespo> getProducts(@RequestParam(value="page",defaultValue="0") int page, @RequestParam(value="limit",defaultValue="15") int limit){
 		
@@ -71,6 +72,13 @@ public class ProductController {
 		return responseModel;
 		
 		
+	}
+	
+	
+	@GetMapping(path="/{productName}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
+	
+	public ProductModelRespo getProduct(@PathVariable String productName) {
+		return productService.getProduct(productName);
 	}
 	
 
