@@ -29,7 +29,7 @@ public class ProductController {
 	@Autowired
 	ProductService productService;
 	
-	
+	//myproduct
 	@PostMapping(path = "/addproduct", consumes ="application/json", produces = "application/json")
 	
 	public ResponseEntity<ProductModelRespo> saveProduct(@RequestBody ProductEntity product) {
