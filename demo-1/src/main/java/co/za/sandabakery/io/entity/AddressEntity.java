@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity(name="addresses")
 public class AddressEntity implements Serializable{
 	
@@ -46,6 +48,7 @@ public class AddressEntity implements Serializable{
 	
 	@OneToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "customers_id", nullable = false)
+	@JsonBackReference
 	private CustomerEntity customer;
 	
 	

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.za.sandabakery.io.entity.ProductEntity;
@@ -32,21 +33,21 @@ public class ProductController {
 	
 	//myproduct
 	@PostMapping(path = "/addproduct", consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
-	
+	@ResponseBody
 	public ResponseEntity<ProductModelRespo> saveProduct(@RequestBody ProductEntity product) {
 				return new ResponseEntity<>(productService.addProduct(product),HttpStatus.OK);
 	}
 	
 	
 	@PutMapping(path="/updateproduct/{id}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
-	
+	@ResponseBody
 	public ResponseEntity<ProductModelRespo> updateProduct(@PathVariable String id,@RequestBody ProductEntity product){
 		return new ResponseEntity<>(productService.updateProduct(id, product),HttpStatus.OK);
 	}
 	
 	
 	@DeleteMapping(path="/deleteProduct/{id}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
-	
+	@ResponseBody
 	public String deleteProduct(@PathVariable String id) {
 		     
 		return productService.deleteProduct(id);
@@ -55,7 +56,7 @@ public class ProductController {
 	
 	
 	@GetMapping(consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
-	
+	@ResponseBody
 	public List<ProductModelRespo> getProducts(@RequestParam(value="page",defaultValue="0") int page, @RequestParam(value="limit",defaultValue="15") int limit){
 		
 		    ModelMapper modelMapper =new ModelMapper();
