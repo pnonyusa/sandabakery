@@ -50,9 +50,8 @@ public class ProductEntity implements Serializable {
     
     private int quantityOnHand;
     
-    @Lob
-    @Column( length = Integer.MAX_VALUE, nullable =true)
-    private byte[] image;
+    /*@Lob
+    private byte[] image;*/
     
     
     @Column(nullable = false)
@@ -98,7 +97,7 @@ public class ProductEntity implements Serializable {
 		this.productRating = productRating;
 		this.price = price;
 		this.quantityOnHand = quantityOnHand;
-		this.image = image;
+		//this.image = image;
 		this.productIngredients = productIngredients;
 		this.orders = orders;
 		this.ordersDetails = ordersDetails;
@@ -109,7 +108,7 @@ public class ProductEntity implements Serializable {
 
 
 
-	public byte[] getImage() {
+	/*public byte[] getImage() {
 		return image;
 	}
 
@@ -117,7 +116,7 @@ public class ProductEntity implements Serializable {
 
 	public void setImage(byte[] image) {
 		this.image = image;
-	}
+	}*/
 
 
 

@@ -20,10 +20,23 @@ public class ProductModelRespo {
     private String productRating;
     
     
-  
+    private String productIngredients;
+    
+    
     private double price;
     
     private int quantityOnHand;
+
+    
+    
+    
+	public String getProductIngredients() {
+		return productIngredients;
+	}
+
+	public void setProductIngredients(String productIngredients) {
+		this.productIngredients = productIngredients;
+	}
 
 	public String getProductId() {
 		return productId;
