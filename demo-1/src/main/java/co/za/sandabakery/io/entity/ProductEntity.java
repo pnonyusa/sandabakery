@@ -10,7 +10,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 
 
@@ -50,8 +49,8 @@ public class ProductEntity implements Serializable {
     
     private int quantityOnHand;
     
-    /*@Lob
-    private byte[] image;*/
+    @Column(nullable = false)
+    private String image;
     
     
     @Column(nullable = false)
@@ -85,7 +84,7 @@ public class ProductEntity implements Serializable {
 
 
 	public ProductEntity(Long id, String productId, String productName, String productDescription,
-			String productCategory, String productRating, double price, int quantityOnHand, byte[] image,
+			String productCategory, String productRating, double price, int quantityOnHand, String image,
 			String productIngredients, List<Order> orders, List<SpecialOrderDetails> ordersDetails,
 			List<MenuOrderDetailsEntity> menuOrder) {
 		super();
@@ -97,7 +96,7 @@ public class ProductEntity implements Serializable {
 		this.productRating = productRating;
 		this.price = price;
 		this.quantityOnHand = quantityOnHand;
-		//this.image = image;
+		this.image = image;
 		this.productIngredients = productIngredients;
 		this.orders = orders;
 		this.ordersDetails = ordersDetails;
@@ -108,15 +107,15 @@ public class ProductEntity implements Serializable {
 
 
 
-	/*public byte[] getImage() {
+	public String getImage() {
 		return image;
 	}
 
 
 
-	public void setImage(byte[] image) {
+	public void setImage(String image) {
 		this.image = image;
-	}*/
+	}
 
 
 
