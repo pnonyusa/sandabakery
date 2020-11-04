@@ -11,5 +11,6 @@ public interface CustomerService {
 	CustomerModelResp updateCustomer(String customerId,CustomerEntity user);
 	String deleteCustomer(String customerId);
 	List<CustomerEntity> getCustomers(int page,int limit);
+	CustomerModelResp getCustomer(String emailAddress);
 
 }

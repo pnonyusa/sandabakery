@@ -76,10 +76,10 @@ public class ProductController {
 	}
 	
 	
-	@GetMapping(path="/{productName}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
+	@GetMapping(path="/{productId}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
 	
-	public ProductModelRespo getProduct(@PathVariable String productName) {
-		return productService.getProduct(productName);
+	public ProductModelRespo getProduct(@PathVariable String productId) {
+		return productService.getProduct(productId);
 	}
 	
 

@@ -107,4 +107,15 @@ public class CustomerServiceImple implements CustomerService {
 		return customers;
 	}
 
+	@Override
+	public CustomerModelResp getCustomer(String emailAddress) {
+		
+		 CustomerEntity customer=custRepository.findByEmailAddress(emailAddress);
+		 
+		 if(customer==null)throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessages());
+		
+		// TODO Auto-generated method stub
+		return (new ModelMapper().map(customer, CustomerModelResp.class));
+	}
+
 }

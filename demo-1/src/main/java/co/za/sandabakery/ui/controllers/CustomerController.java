@@ -63,5 +63,13 @@ public class CustomerController {
 	}
 	
 	
+	@GetMapping(path="/{emailAddress}",consumes ="application/json", produces = "application/json")
+	public ResponseEntity<CustomerModelResp> getCustomer(@PathVariable String emailAddress){
+		
+		return new ResponseEntity<CustomerModelResp>(customerService.getCustomer(emailAddress),HttpStatus.OK) ;
+		
+	}
+	
+	
 
 }

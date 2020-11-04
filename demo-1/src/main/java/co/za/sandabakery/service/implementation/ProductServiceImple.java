@@ -53,6 +53,8 @@ public class ProductServiceImple implements  ProductService {
 		
 		prod.setPrice(product.getPrice());
 		prod.setQuantityOnHand(product.getQuantityOnHand());
+		prod.setImage(product.getImage());
+		prod.setProductRating(product.getProductRating());
 		
 		// TODO Auto-generated method stub
 		return modelMapper.map(productRepository.save(prod),ProductModelRespo.class) ;
@@ -85,9 +87,9 @@ public class ProductServiceImple implements  ProductService {
 	}
 
 	@Override
-	public ProductModelRespo getProduct(String productName) {
+	public ProductModelRespo getProduct(String productId) {
 		// TODO Auto-generated method stub
-		ProductEntity product=productRepository.findByProductName(productName);
+		ProductEntity product=productRepository.findByProductId(productId);
 		if(product==null)throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessages());
 		return new ModelMapper().map(product, ProductModelRespo.class);
 	}
