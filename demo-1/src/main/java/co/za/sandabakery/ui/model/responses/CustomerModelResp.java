@@ -25,6 +25,8 @@ public class CustomerModelResp {
 	
 	private AddressModelResp address;
 	
+	private String password;
+	
 	
 	
 	
@@ -38,7 +40,7 @@ public class CustomerModelResp {
 
 
 	public CustomerModelResp(String customerId, String lastName, String firstName, String emailAddress,
-			String cellNumber, AddressModelResp address) {
+			String cellNumber, AddressModelResp address,String password) {
 		super();
 		this.customerId = customerId;
 		this.lastName = lastName;
@@ -46,6 +48,7 @@ public class CustomerModelResp {
 		this.emailAddress = emailAddress;
 		this.cellNumber = cellNumber;
 		this.address = address;
+		this.password=password;
 	}
 
 
@@ -56,6 +59,18 @@ public class CustomerModelResp {
 
 	public void setCustomerId(String customerId) {
 		this.customerId = customerId;
+	}
+
+	
+	
+
+	public String getPassword() {
+		return password;
+	}
+
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 

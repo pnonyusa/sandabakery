@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 
 @Entity(name="products")
@@ -59,16 +61,19 @@ public class ProductEntity implements Serializable {
     
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
+    
     private List<Order> orders;
     
     
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
+    
     private List<SpecialOrderDetails> ordersDetails;
     
     
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
+    
     private List<MenuOrderDetailsEntity> menuOrder;
     
     

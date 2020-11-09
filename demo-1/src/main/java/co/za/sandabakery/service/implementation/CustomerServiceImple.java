@@ -69,6 +69,11 @@ public class CustomerServiceImple implements CustomerService {
 		user.setCellNumber(customer.getCellNumber());
 		user.setFirstName(customer.getFirstName());
 		user.setLastName(customer.getLastName());
+		user.setPassword(customer.getPassword());
+		user.getAddress().setCity(customer.getAddress().getCity());
+		user.getAddress().setPostalCode(customer.getAddress().getPostalCode());
+		user.getAddress().setStreetName(customer.getAddress().getStreetName());
+		user.getAddress().setType(customer.getAddress().getType());
 		
 		
 		
@@ -108,14 +113,14 @@ public class CustomerServiceImple implements CustomerService {
 	}
 
 	@Override
-	public CustomerModelResp getCustomer(String emailAddress) {
+	public CustomerEntity getCustomer(String customerId) {
 		
-		 CustomerEntity customer=custRepository.findByEmailAddress(emailAddress);
+		 CustomerEntity customer=custRepository.findByCustomerId(customerId);
 		 
 		 if(customer==null)throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessages());
 		
 		// TODO Auto-generated method stub
-		return (new ModelMapper().map(customer, CustomerModelResp.class));
+		return customer;
 	}
 
 }

@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * @author Reverside
  *
@@ -36,6 +38,7 @@ public class SpecialOrderDetails implements Serializable {
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "products_id", nullable = false)
+	
 	private ProductEntity product;
 	
 	private int quantity;

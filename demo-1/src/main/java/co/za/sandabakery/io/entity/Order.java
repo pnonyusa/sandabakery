@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity(name="orders")
 public class Order implements Serializable {
@@ -42,20 +44,24 @@ public class Order implements Serializable {
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "customers_id", nullable = false)
+	
 	private CustomerEntity customer;
 	
 	
 	 @ManyToOne(fetch = FetchType.LAZY, optional = false)
 	 @JoinColumn(name = "products_id", nullable = false)
+	 
 	 private ProductEntity product;
 	 
 	 @OneToMany(mappedBy = "order", fetch = FetchType.LAZY,
 	            cascade = CascadeType.ALL)
+	 
 	  private List<SpecialOrderDetails> ordersDetails;
 	 
 	 
 	 @OneToMany(mappedBy = "order", fetch = FetchType.LAZY,
 	            cascade = CascadeType.ALL)
+	 
 	  private List<MenuOrderDetailsEntity> menuOrder;
 	 
 	 

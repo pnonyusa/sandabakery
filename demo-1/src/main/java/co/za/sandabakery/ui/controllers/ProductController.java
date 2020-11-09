@@ -77,7 +77,7 @@ public class ProductController {
 	
 	
 	@GetMapping(path="/{productId}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
-	
+	@ResponseBody
 	public ProductModelRespo getProduct(@PathVariable String productId) {
 		return productService.getProduct(productId);
 	}

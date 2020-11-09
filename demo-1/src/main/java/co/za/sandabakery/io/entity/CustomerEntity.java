@@ -13,6 +13,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 @Entity(name="customers")
 public class CustomerEntity implements Serializable {
@@ -66,6 +70,7 @@ public class CustomerEntity implements Serializable {
 	@OneToOne(fetch = FetchType.LAZY,
             cascade =  CascadeType.ALL,
             mappedBy = "customer")
+	@JsonManagedReference
 	private AddressEntity address;
 	
 
