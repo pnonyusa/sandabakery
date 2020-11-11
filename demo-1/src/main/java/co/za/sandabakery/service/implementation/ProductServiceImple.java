@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import co.za.sandabakery.exceptions.UserServiceException;
-
+import co.za.sandabakery.io.entity.ProductCategory;
 import co.za.sandabakery.io.entity.ProductEntity;
 import co.za.sandabakery.respositories.ProductRepository;
 import co.za.sandabakery.service.ProductService;
@@ -93,5 +93,16 @@ public class ProductServiceImple implements  ProductService {
 		if(product==null)throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessages());
 		return new ModelMapper().map(product, ProductModelRespo.class);
 	}
+
+	@Override
+	public List<ProductEntity> getProductsByCategory(ProductCategory productCategory) {
+		// TODO Auto-generated method stub
+		List<ProductEntity> products=productRepository.findByCategory(productCategory);
+		
+		if(products==null)throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessages());
+		return products;
+	}
+
+	
 
 }

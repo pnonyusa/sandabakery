@@ -10,9 +10,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 
@@ -39,8 +40,9 @@ public class ProductEntity implements Serializable {
     private String productDescription;
     
     
-    @Column(nullable = false)
-    private String productCategory;
+    @ManyToOne
+    @JoinColumn(name="category_id",nullable= false)
+    private ProductCategory category;
     
     
     private String productRating;
@@ -89,7 +91,7 @@ public class ProductEntity implements Serializable {
 
 
 	public ProductEntity(Long id, String productId, String productName, String productDescription,
-			String productCategory, String productRating, double price, int quantityOnHand, String image,
+			ProductCategory category, String productRating, double price, int quantityOnHand, String image,
 			String productIngredients, List<Order> orders, List<SpecialOrderDetails> ordersDetails,
 			List<MenuOrderDetailsEntity> menuOrder) {
 		super();
@@ -97,7 +99,7 @@ public class ProductEntity implements Serializable {
 		this.productId = productId;
 		this.productName = productName;
 		this.productDescription = productDescription;
-		this.productCategory = productCategory;
+		this.category = category;
 		this.productRating = productRating;
 		this.price = price;
 		this.quantityOnHand = quantityOnHand;
@@ -208,11 +210,11 @@ public class ProductEntity implements Serializable {
 	public void setProductDescription(String productDescription) {
 		this.productDescription = productDescription;
 	}
-	public String getProductCategory() {
-		return productCategory;
+	public ProductCategory getCategory() {
+		return category;
 	}
-	public void setProductCategory(String productCategory) {
-		this.productCategory = productCategory;
+	public void setCategory(ProductCategory category) {
+		this.category = category;
 	}
 	public String getProductRating() {
 		return productRating;

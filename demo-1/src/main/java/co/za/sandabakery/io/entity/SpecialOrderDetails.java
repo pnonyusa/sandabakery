@@ -13,10 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
- * @author Reverside
+ * @author Phaphamani Nonyusa
  *
  */
 @Entity(name="specialOrderDetails")
