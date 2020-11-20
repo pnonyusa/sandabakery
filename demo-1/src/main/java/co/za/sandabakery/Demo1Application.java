@@ -3,6 +3,7 @@ package co.za.sandabakery;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 public class Demo1Application {
@@ -18,4 +19,11 @@ public class Demo1Application {
 		
 		return new SpringApplicationContext();
 	}
+	
+	@Bean
+	public BCryptPasswordEncoder bCryptPasswordEncoder() {
+  		return new BCryptPasswordEncoder();
+	}
+	
+	
 }

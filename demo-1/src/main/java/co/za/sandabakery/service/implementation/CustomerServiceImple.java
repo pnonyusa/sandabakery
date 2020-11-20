@@ -3,13 +3,19 @@
  */
 package co.za.sandabakery.service.implementation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import co.za.sandabakery.exceptions.UserServiceException;
@@ -37,6 +43,12 @@ public class CustomerServiceImple implements CustomerService {
 	@Autowired
 	CustomerRepository custRepository;
 	
+	
+	@Autowired
+	BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	
+	
 
 	@Override
 	public CustomerModelResp createCustomer(CustomerEntity customer) {
@@ -56,6 +68,10 @@ public class CustomerServiceImple implements CustomerService {
 		
 		customer.setAddress(address);
 		
+		customer.setEncryptedPassword(bCryptPasswordEncoder.encode(customer.getPassword()));
+		
+		
+		
 		return modelMapper.map(custRepository.save(customer), CustomerModelResp.class) ;
 	}
 
@@ -72,6 +88,7 @@ public class CustomerServiceImple implements CustomerService {
 		user.setFirstName(customer.getFirstName());
 		user.setLastName(customer.getLastName());
 		user.setPassword(customer.getPassword());
+		user.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		user.getAddress().setCity(customer.getAddress().getCity());
 		user.getAddress().setPostalCode(customer.getAddress().getPostalCode());
 		user.getAddress().setStreetName(customer.getAddress().getStreetName());
@@ -122,6 +139,26 @@ public class CustomerServiceImple implements CustomerService {
 		 if(customer==null)throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessages());
 		
 		// TODO Auto-generated method stub
+		return customer;
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String emailAddress) throws UsernameNotFoundException {
+		// TODO Auto-generated method stub
+		CustomerEntity userEntity=custRepository.findByEmailAddress(emailAddress);
+		
+		if(userEntity==null)
+			throw new UsernameNotFoundException(emailAddress+"not found,please create an account");
+		return new User(userEntity.getEmailAddress(),userEntity.getEncryptedPassword(),new ArrayList<>());
+	}
+
+	@Override
+	public CustomerEntity getCustomerByEmail(String emailAddress) {
+		// TODO Auto-generated method stub
+		CustomerEntity customer =custRepository.findByEmailAddress(emailAddress);
+		
+		if(customer==null)throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessages());
+		
 		return customer;
 	}
 
