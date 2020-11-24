@@ -2,6 +2,7 @@ package co.za.sandabakery.io.entity;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,8 +11,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
 
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -72,6 +76,10 @@ public class CustomerEntity implements Serializable {
 	@JsonManagedReference
 	private AddressEntity address;
 	
+	
+	@ManyToMany(cascade= {CascadeType.ALL},fetch=FetchType.LAZY)
+    @JoinTable(name="tbl_user_role", joinColumns= {@JoinColumn(name="customers_id")},inverseJoinColumns= {@JoinColumn(name="roles_id")})
+    private Set<Role> roles;
 
 	public CustomerEntity() {
 		super();
@@ -82,9 +90,15 @@ public class CustomerEntity implements Serializable {
 	
 	
 
+
+
+
+
+
+
 	public CustomerEntity(Long id, String customerId, String lastName, String firstName, String emailAddress,
 			String cellNumber, String password, String encryptedPassword, String emailVerificationToken,
-			Boolean emailVerificationStatus, AddressEntity address) {
+			Boolean emailVerificationStatus, List<Order> orders, AddressEntity address, Set<Role> roles) {
 		super();
 		this.id = id;
 		this.customerId = customerId;
@@ -96,8 +110,72 @@ public class CustomerEntity implements Serializable {
 		this.encryptedPassword = encryptedPassword;
 		this.emailVerificationToken = emailVerificationToken;
 		this.emailVerificationStatus = emailVerificationStatus;
+		this.orders = orders;
 		this.address = address;
+		this.roles = roles;
 	}
+
+
+
+
+
+
+
+
+
+
+
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+
+
+
+
+
+
+
+
+
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+
+
+
+
+
+
+
+
+
+
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+
+
+
+
+
+
+
+
+
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+
+
+
+
+
+
 
 
 

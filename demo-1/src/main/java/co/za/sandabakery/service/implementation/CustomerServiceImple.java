@@ -4,7 +4,10 @@
 package co.za.sandabakery.service.implementation;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,22 +15,32 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import co.za.sandabakery.exceptions.UserServiceException;
 import co.za.sandabakery.io.entity.AddressEntity;
 import co.za.sandabakery.io.entity.CustomerEntity;
 import co.za.sandabakery.respositories.CustomerRepository;
+import co.za.sandabakery.respositories.RoleRepository;
+import co.za.sandabakery.security.jwt.JwtProvider;
+import co.za.sandabakery.security.jwt.response.JwtResponse;
 import co.za.sandabakery.service.CustomerService;
 import co.za.sandabakery.shared.dto.utils.Utils;
+import co.za.sandabakery.ui.model.requests.SignUpUser;
+import co.za.sandabakery.ui.model.requests.UserLogIn;
 import co.za.sandabakery.ui.model.responses.CustomerModelResp;
 import co.za.sandabakery.ui.model.responses.ErrorMessages;
 
-
+import co.za.sandabakery.io.entity.Role;
 
 /**
  * @author Phaphamani Nonyusa
@@ -36,47 +49,99 @@ import co.za.sandabakery.ui.model.responses.ErrorMessages;
 
 
 @Service 
-
+@Component
 public class CustomerServiceImple implements CustomerService {
 	
 	
 	@Autowired
 	CustomerRepository custRepository;
 	
+	@Autowired
+	private RoleRepository userRole;
+	
 	
 	@Autowired
-	BCryptPasswordEncoder bCryptPasswordEncoder;
+	BCryptPasswordEncoder encoder;
+	
+	@Autowired
+	AuthenticationManager authenticationManager;
+	
+	@Autowired
+    JwtProvider jwtProvider;
 	
 	
 	
 
 	@Override
-	public CustomerModelResp createCustomer(CustomerEntity customer) {
+	public CustomerModelResp createCustomer(SignUpUser systemUser) {
 		
 		
 		ModelMapper modelMapper =new ModelMapper();
+		CustomerEntity customer=new CustomerEntity();
+		AddressEntity address=new AddressEntity();
+		Set<Role> roles = new HashSet<>();
+	
 		
-		if(customer==null)throw new NullPointerException(ErrorMessages.OBJECT_IS_NULL.getErrorMessages());
+		if(systemUser==null)throw new NullPointerException(ErrorMessages.OBJECT_IS_NULL.getErrorMessages());
 		
-		AddressEntity address=customer.getAddress();
 		
-		customer.setCustomerId(new Utils().generateUserId(12));
+		systemUser.getAddress().setAddressId(new Utils().generateUserId(10));
+		systemUser.setCustomerId(new Utils().generateUserId(12));
+	
 		
-		address.setAddressId(new Utils().generateUserId(10));
+		switch(systemUser.getRole()) {
 		
-		address.setCustomer(customer);
 		
+		case "admin":
+			Role adminRole=userRole.findByRoleName("ROLE_ADMIN");
+			
+		if(adminRole==null)throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessages());
+		adminRole.setRole_Id(new Utils().generateUserId(9));
+		roles.add(adminRole);
+	
+		break;
+		
+		case "user":
+			Role pmRole=userRole.findByRoleName("ROLE_USER");
+			if(pmRole==null)throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessages());
+			
+			pmRole.setRole_Id(new Utils().generateUserId(9));
+		    roles.add(pmRole);
+		    break;
+		}
+		
+		//customer object
+		customer.setCellNumber(systemUser.getCellNumber());
+		customer.setRoles(roles);
+		customer.setFirstName(systemUser.getFirstName());
+		customer.setEmailAddress(systemUser.getEmailAddress());
+		customer.setLastName(systemUser.getLastName());
+		//customer.setEncryptedPassword(encoder.encode(systemUser.getPassword()));
+		customer.setCustomerId(systemUser.getCustomerId());
+		customer.setPassword(encoder.encode(systemUser.getPassword()));
+		
+		//address object
+		address.setAddressId(systemUser.getAddress().getAddressId());
+		address.setCity(systemUser.getAddress().getCity());
+		address.setCountry(systemUser.getAddress().getCountry());
+		address.setPostalCode(systemUser.getAddress().getPostalCode());
+		address.setType(systemUser.getAddress().getType());
+		address.setStreetName(systemUser.getAddress().getStreetName());
+		
+		
+		//sets 
+        address.setCustomer(customer);
 		customer.setAddress(address);
 		
-		customer.setEncryptedPassword(bCryptPasswordEncoder.encode(customer.getPassword()));
 		
 		
 		
-		return modelMapper.map(custRepository.save(customer), CustomerModelResp.class) ;
+		
+		return modelMapper.map(custRepository.save(customer), CustomerModelResp.class);
 	}
 
 	@Override
-	public CustomerModelResp updateCustomer(String customerId,CustomerEntity customer) {
+	public CustomerModelResp updateCustomer(String customerId,SignUpUser customer) {
 		
 		CustomerEntity user=custRepository.findByCustomerId(customerId);
 		
@@ -87,8 +152,8 @@ public class CustomerServiceImple implements CustomerService {
 		user.setCellNumber(customer.getCellNumber());
 		user.setFirstName(customer.getFirstName());
 		user.setLastName(customer.getLastName());
-		user.setPassword(customer.getPassword());
-		user.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+		user.setPassword(encoder.encode(user.getPassword()));
+		//user.setEncryptedPassword(encoder.encode(user.getPassword()));
 		user.getAddress().setCity(customer.getAddress().getCity());
 		user.getAddress().setPostalCode(customer.getAddress().getPostalCode());
 		user.getAddress().setStreetName(customer.getAddress().getStreetName());
@@ -142,15 +207,7 @@ public class CustomerServiceImple implements CustomerService {
 		return customer;
 	}
 
-	@Override
-	public UserDetails loadUserByUsername(String emailAddress) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
-		CustomerEntity userEntity=custRepository.findByEmailAddress(emailAddress);
-		
-		if(userEntity==null)
-			throw new UsernameNotFoundException(emailAddress+"not found,please create an account");
-		return new User(userEntity.getEmailAddress(),userEntity.getEncryptedPassword(),new ArrayList<>());
-	}
+
 
 	@Override
 	public CustomerEntity getCustomerByEmail(String emailAddress) {
@@ -160,6 +217,26 @@ public class CustomerServiceImple implements CustomerService {
 		if(customer==null)throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessages());
 		
 		return customer;
+	}
+
+	@Override
+	public ResponseEntity<?> isLoggedIn(UserLogIn loginDetails) {
+		// TODO Auto-generated method stub
+		
+		Authentication auth =authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(loginDetails.getEmailAddress(),loginDetails.getPassword()));
+		
+		
+	
+		
+		SecurityContextHolder.getContext().setAuthentication(auth);
+		String jwt=jwtProvider.generateJwtToken(auth);
+		UserDetails userDetails=(UserDetails)auth.getPrincipal();
+		
+		//System.out.println("this is jwt "+jwt);
+		
+		
+		return ResponseEntity.ok(new JwtResponse(jwt,userDetails.getUsername(),userDetails.getAuthorities()));
 	}
 
 }

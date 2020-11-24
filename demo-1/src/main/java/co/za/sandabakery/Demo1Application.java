@@ -20,10 +20,7 @@ public class Demo1Application {
 		return new SpringApplicationContext();
 	}
 	
-	@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-  		return new BCryptPasswordEncoder();
-	}
+
 	
 	
 }
