@@ -3,15 +3,12 @@
  */
 package co.za.sandabakery.service.implementation;
 
-import java.util.ArrayList;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +19,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -72,6 +68,7 @@ public class CustomerServiceImple implements CustomerService {
 	
 	
 
+	//register user on system
 	@Override
 	public CustomerModelResp createCustomer(SignUpUser systemUser) {
 		
@@ -140,6 +137,7 @@ public class CustomerServiceImple implements CustomerService {
 		return modelMapper.map(custRepository.save(customer), CustomerModelResp.class);
 	}
 
+	//updates the user based on  id
 	@Override
 	public CustomerModelResp updateCustomer(String customerId,SignUpUser customer) {
 		
@@ -166,6 +164,8 @@ public class CustomerServiceImple implements CustomerService {
 
 	
 	
+	//delete user based on id
+	
 	@Override
 	public String deleteCustomer(String customerId) {
 		
@@ -183,6 +183,8 @@ public class CustomerServiceImple implements CustomerService {
 
 	}
 
+	
+	//retrives all users
 	@Override
 	public List<CustomerEntity> getCustomers(int page, int limit) {
 		
@@ -196,6 +198,7 @@ public class CustomerServiceImple implements CustomerService {
 		return customers;
 	}
 
+	//retrieves single user based on given id
 	@Override
 	public CustomerEntity getCustomer(String customerId) {
 		
@@ -209,6 +212,7 @@ public class CustomerServiceImple implements CustomerService {
 
 
 
+	//retreives user by email
 	@Override
 	public CustomerEntity getCustomerByEmail(String emailAddress) {
 		// TODO Auto-generated method stub
@@ -219,6 +223,7 @@ public class CustomerServiceImple implements CustomerService {
 		return customer;
 	}
 
+	//it validate if the user logging in does exist on sql server
 	@Override
 	public ResponseEntity<?> isLoggedIn(UserLogIn loginDetails) {
 		// TODO Auto-generated method stub

@@ -6,10 +6,7 @@ import co.za.sandabakery.io.entity.CustomerEntity;
 import co.za.sandabakery.ui.model.requests.SignUpUser;
 import co.za.sandabakery.ui.model.requests.UserLogIn;
 import co.za.sandabakery.ui.model.responses.CustomerModelResp;
-
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 
 public interface CustomerService  {
