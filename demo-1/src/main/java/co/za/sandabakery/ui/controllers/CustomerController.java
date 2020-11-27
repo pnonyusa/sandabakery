@@ -28,7 +28,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 @RestController
-@RequestMapping("customers")
+@RequestMapping("users")
 public class CustomerController {
 	
 	
@@ -47,7 +47,7 @@ public class CustomerController {
 	}
 	
 	
-	@PutMapping(path = "/update/{id}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
+	@PutMapping(path = "user/update/{id}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
 	public ResponseEntity<CustomerModelResp>  updateCustomer(@PathVariable String id,@RequestBody SignUpUser customer ) {
 		
 		return new ResponseEntity<CustomerModelResp>(customerService.updateCustomer(id, customer),HttpStatus.OK);
@@ -59,7 +59,7 @@ public class CustomerController {
 		return customerService.isLoggedIn(loginCredetials);
 	}
 	
-	@DeleteMapping(path="/delete/{id}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
+	@DeleteMapping(path="/admin/delete/{id}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
 	@ResponseBody
 	public String deleteCustomer(@PathVariable String id) {
 		
@@ -68,8 +68,7 @@ public class CustomerController {
 	
 	
 	
-	@GetMapping(consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
-	
+	@GetMapping(path="/admin",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
 	public List<CustomerEntity> getCustomers(@RequestParam(value="page",defaultValue="0") int page, @RequestParam(value="limit",defaultValue="15") int limit){
 		
 		return customerService.getCustomers(page, limit) ;
@@ -77,7 +76,7 @@ public class CustomerController {
 	}
 	
 	
-	@GetMapping(path="/{customerId}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
+	@GetMapping(path="/admin/{customerId}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
 	@ResponseBody
 	public ResponseEntity<CustomerEntity> getCustomer(@PathVariable String customerId){
 		

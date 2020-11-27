@@ -24,7 +24,7 @@ import co.za.sandabakery.service.ProductService;
 import co.za.sandabakery.ui.model.responses.ProductModelRespo;
 
 @RestController
-@RequestMapping("product")
+@RequestMapping("/product")
 public class ProductController {
 	
 	
@@ -32,21 +32,21 @@ public class ProductController {
 	ProductService productService;
 	
 	//myproduct
-	@PostMapping(path = "/addproduct", consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
+	@PostMapping(path = "/admin/addproduct", consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
 	@ResponseBody
 	public ResponseEntity<ProductModelRespo> saveProduct(@RequestBody ProductEntity product) {
 				return new ResponseEntity<>(productService.addProduct(product),HttpStatus.OK);
 	}
 	
 	
-	@PutMapping(path="/updateproduct/{id}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
+	@PutMapping(path="/admin/updateproduct/{id}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
 	@ResponseBody
 	public ResponseEntity<ProductModelRespo> updateProduct(@PathVariable String id,@RequestBody ProductEntity product){
 		return new ResponseEntity<>(productService.updateProduct(id, product),HttpStatus.OK);
 	}
 	
 	
-	@DeleteMapping(path="/deleteProduct/{id}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
+	@DeleteMapping(path="/admin/deleteProduct/{id}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
 	@ResponseBody
 	public String deleteProduct(@PathVariable String id) {
 		     
