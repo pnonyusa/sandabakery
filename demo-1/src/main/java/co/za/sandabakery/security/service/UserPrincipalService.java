@@ -29,7 +29,7 @@ public class UserPrincipalService implements UserDetailsService {
 		if (user == null)
 			throw new UsernameNotFoundException(emailAddress + "not found,please create an account");
 
-		return UserPrinciple.build(user);
+		return new UserPrinciple(user);
 	}
 
 }

@@ -36,6 +36,7 @@ public class ProductServiceImple implements  ProductService {
 		
 		
 		product.setProductId(new Utils().generateUserId(11));
+		product.getCategory().setProductCategoryId(new Utils().generateUserId(10));
 
      		
 		return modelMapper.map(productRepository.save(product),ProductModelRespo.class);

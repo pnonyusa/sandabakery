@@ -3,11 +3,14 @@ package co.za.sandabakery.ui.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,20 +35,21 @@ public class ProductController {
 	ProductService productService;
 	
 	//myproduct
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@PostMapping(path = "/admin/addproduct", consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
 	@ResponseBody
 	public ResponseEntity<ProductModelRespo> saveProduct(@RequestBody ProductEntity product) {
 				return new ResponseEntity<>(productService.addProduct(product),HttpStatus.OK);
 	}
 	
-	
+    @PreAuthorize("hasAuthority('ADMIN')")
 	@PutMapping(path="/admin/updateproduct/{id}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
 	@ResponseBody
 	public ResponseEntity<ProductModelRespo> updateProduct(@PathVariable String id,@RequestBody ProductEntity product){
 		return new ResponseEntity<>(productService.updateProduct(id, product),HttpStatus.OK);
 	}
 	
-	
+    @PreAuthorize("hasAuthority('ADMIN')")
 	@DeleteMapping(path="/admin/deleteProduct/{id}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
 	@ResponseBody
 	public String deleteProduct(@PathVariable String id) {

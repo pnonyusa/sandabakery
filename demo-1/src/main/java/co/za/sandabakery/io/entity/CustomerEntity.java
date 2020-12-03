@@ -77,7 +77,7 @@ public class CustomerEntity implements Serializable {
 	private AddressEntity address;
 	
 	
-	@ManyToMany(cascade= {CascadeType.ALL},fetch=FetchType.LAZY)
+	@ManyToMany(cascade= {CascadeType.ALL},fetch = FetchType.EAGER)
     @JoinTable(name="tbl_user_role", joinColumns= {@JoinColumn(name="customers_id")},inverseJoinColumns= {@JoinColumn(name="roles_id")})
     private Set<Role> roles;
 

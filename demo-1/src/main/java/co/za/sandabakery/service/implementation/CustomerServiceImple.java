@@ -12,13 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +22,7 @@ import co.za.sandabakery.io.entity.AddressEntity;
 import co.za.sandabakery.io.entity.CustomerEntity;
 import co.za.sandabakery.respositories.CustomerRepository;
 import co.za.sandabakery.respositories.RoleRepository;
-import co.za.sandabakery.security.jwt.JwtProvider;
-import co.za.sandabakery.security.jwt.response.JwtResponse;
+
 import co.za.sandabakery.service.CustomerService;
 import co.za.sandabakery.shared.dto.utils.Utils;
 import co.za.sandabakery.ui.model.requests.SignUpUser;
@@ -57,13 +51,11 @@ public class CustomerServiceImple implements CustomerService {
 	
 	
 	@Autowired
-	BCryptPasswordEncoder encoder;
+	PasswordEncoder encoder;
 	
-	@Autowired
-	AuthenticationManager authenticationManager;
 	
-	@Autowired
-    JwtProvider jwtProvider;
+	
+	
 	
 	
 	
@@ -225,23 +217,19 @@ public class CustomerServiceImple implements CustomerService {
 
 	//it validate if the user logging in does exist on sql server
 	@Override
-	public ResponseEntity<?> isLoggedIn(UserLogIn loginDetails) {
+	public boolean isLoggedIn(UserLogIn loginDetails) {
 		// TODO Auto-generated method stub
+		 CustomerEntity customer=getCustomerByEmail(loginDetails.getEmailAddress());	
 		
-		Authentication auth =authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginDetails.getEmailAddress(),loginDetails.getPassword()));
-		
-		
-	
-		
-		SecurityContextHolder.getContext().setAuthentication(auth);
-		String jwt=jwtProvider.generateJwtToken(auth);
-		UserDetails userDetails=(UserDetails)auth.getPrincipal();
-		
-		//System.out.println("this is jwt "+jwt);
+		  if(customer!=null) {
+			  encoder.matches(loginDetails.getPassword(), customer.getPassword());
+			  
+			  return true;
+			
+		  }
 		
 		
-		return ResponseEntity.ok(new JwtResponse(jwt,userDetails.getUsername(),userDetails.getAuthorities()));
+		return false;
 	}
 
 }

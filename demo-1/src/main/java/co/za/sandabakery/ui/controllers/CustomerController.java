@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import co.za.sandabakery.io.entity.CustomerEntity;
+import co.za.sandabakery.security.jwt.JwtProvider;
+import co.za.sandabakery.security.jwt.response.JwtResponse;
 import co.za.sandabakery.service.CustomerService;
 import co.za.sandabakery.ui.model.requests.SignUpUser;
 import co.za.sandabakery.ui.model.requests.UserLogIn;
@@ -27,6 +29,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
+
 @RestController
 @RequestMapping("users")
 public class CustomerController {
@@ -34,6 +37,9 @@ public class CustomerController {
 	
 	@Autowired
 	CustomerService customerService;
+	
+	@Autowired 
+	JwtProvider jwtProvider;
 	
 	
 
@@ -55,8 +61,19 @@ public class CustomerController {
 	
 	@PermitAll
 	@PostMapping(path="/login",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
-	public ResponseEntity<?> isLoggedIn( @RequestBody UserLogIn loginCredetials){
-		return customerService.isLoggedIn(loginCredetials);
+	public JwtResponse isLoggedIn( @RequestBody UserLogIn loginCredetials){
+		
+		JwtResponse myToken=new JwtResponse();
+		if(customerService.isLoggedIn(loginCredetials)) {
+			
+			String token=jwtProvider.generateToken(loginCredetials.getEmailAddress());
+			myToken.setAccessToken(token);
+			return myToken;
+			
+		}
+		
+		myToken.setAccessToken("Unable to authenticate the user "+loginCredetials.getEmailAddress()+" "+"and unable to generate token");
+		return myToken;
 	}
 	
 	@DeleteMapping(path="/admin/delete/{id}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
@@ -82,6 +99,23 @@ public class CustomerController {
 		
 		return new ResponseEntity<CustomerEntity>(customerService.getCustomer(customerId),HttpStatus.OK) ;
 		
+	}
+	
+	
+	@GetMapping(path="/admin/test")
+	@ResponseBody
+	public String test() {
+		
+		return "Hello admin";
+	}
+	
+	
+	
+	@GetMapping(path="/user/test")
+	@ResponseBody
+	public String testCustomerAuthorization() {
+		
+		return "Hello user";
 	}
 	
 	
