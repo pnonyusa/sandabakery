@@ -7,5 +7,6 @@ public class URL {
     public static final String ADMIN="/users/admin/**";
     public static final String ADMIN_PRODUCT="/product/admin/**";
     public static final String USER="/users/user/**";
+    public static final String ALL="/product/{productId}";
 
 }

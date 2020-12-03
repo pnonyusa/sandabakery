@@ -35,21 +35,21 @@ public class ProductController {
 	ProductService productService;
 	
 	//myproduct
-	@PreAuthorize("hasAuthority('ADMIN')")
+	
 	@PostMapping(path = "/admin/addproduct", consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
 	@ResponseBody
 	public ResponseEntity<ProductModelRespo> saveProduct(@RequestBody ProductEntity product) {
 				return new ResponseEntity<>(productService.addProduct(product),HttpStatus.OK);
 	}
 	
-    @PreAuthorize("hasAuthority('ADMIN')")
+    
 	@PutMapping(path="/admin/updateproduct/{id}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
 	@ResponseBody
 	public ResponseEntity<ProductModelRespo> updateProduct(@PathVariable String id,@RequestBody ProductEntity product){
 		return new ResponseEntity<>(productService.updateProduct(id, product),HttpStatus.OK);
 	}
 	
-    @PreAuthorize("hasAuthority('ADMIN')")
+    
 	@DeleteMapping(path="/admin/deleteProduct/{id}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
 	@ResponseBody
 	public String deleteProduct(@PathVariable String id) {
