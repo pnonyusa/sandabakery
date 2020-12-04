@@ -53,7 +53,7 @@ public class CustomerController {
 	}
 	
 	
-	@PutMapping(path = "user/update/{id}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
+	@PutMapping(path = "/user/update/{id}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
 	public ResponseEntity<CustomerModelResp>  updateCustomer(@PathVariable String id,@RequestBody SignUpUser customer ) {
 		
 		return new ResponseEntity<CustomerModelResp>(customerService.updateCustomer(id, customer),HttpStatus.OK);
