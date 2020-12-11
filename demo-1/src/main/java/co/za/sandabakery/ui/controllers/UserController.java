@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 import co.za.sandabakery.io.entity.UserEntity;
 import co.za.sandabakery.security.jwt.JwtProvider;
 import co.za.sandabakery.security.jwt.response.JwtResponse;
-import co.za.sandabakery.service.CustomerService;
+import co.za.sandabakery.service.UserService;
 import co.za.sandabakery.ui.model.requests.SignUpUser;
 import co.za.sandabakery.ui.model.requests.UserLogIn;
-import co.za.sandabakery.ui.model.responses.CustomerModelResp;
+import co.za.sandabakery.ui.model.responses.UserModelResp;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,11 +32,11 @@ import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("users")
-public class CustomerController {
+public class UserController {
 	
 	
 	@Autowired
-	CustomerService customerService;
+	UserService customerService;
 	
 	@Autowired 
 	JwtProvider jwtProvider;
@@ -47,16 +47,16 @@ public class CustomerController {
 	@PermitAll
 	@PostMapping(path = "/signup",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
 	
-	public ResponseEntity<CustomerModelResp> registerCustomer(@RequestBody SignUpUser customer ) throws Exception{
+	public ResponseEntity<UserModelResp> registerCustomer(@RequestBody SignUpUser customer ) throws Exception{
 		
-		return new ResponseEntity<>(customerService.createCustomer(customer),HttpStatus.OK) ;
+		return new ResponseEntity<>(customerService.createUser(customer),HttpStatus.OK) ;
 	}
 	
 	
 	@PutMapping(path = "/user/update/{id}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
-	public ResponseEntity<CustomerModelResp>  updateCustomer(@PathVariable String id,@RequestBody SignUpUser customer ) {
+	public ResponseEntity<UserModelResp>  updateCustomer(@PathVariable String id,@RequestBody SignUpUser customer ) {
 		
-		return new ResponseEntity<CustomerModelResp>(customerService.updateCustomer(id, customer),HttpStatus.OK);
+		return new ResponseEntity<UserModelResp>(customerService.updateUser(id, customer),HttpStatus.OK);
 	}
 	
 	@PermitAll
@@ -80,7 +80,7 @@ public class CustomerController {
 	@ResponseBody
 	public String deleteCustomer(@PathVariable String id) {
 		
-		return customerService.deleteCustomer(id);	
+		return customerService.deleteUser(id);	
 	}
 	
 	
@@ -88,7 +88,7 @@ public class CustomerController {
 	@GetMapping(path="/admin",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
 	public List<UserEntity> getCustomers(@RequestParam(value="page",defaultValue="0") int page, @RequestParam(value="limit",defaultValue="15") int limit){
 		
-		return customerService.getCustomers(page, limit) ;
+		return customerService.getUsers(page, limit) ;
 		
 	}
 	
@@ -97,7 +97,7 @@ public class CustomerController {
 	@ResponseBody
 	public ResponseEntity<UserEntity> getCustomer(@PathVariable String customerId){
 		
-		return new ResponseEntity<UserEntity>(customerService.getCustomer(customerId),HttpStatus.OK) ;
+		return new ResponseEntity<UserEntity>(customerService.getUser(customerId),HttpStatus.OK) ;
 		
 	}
 	

@@ -23,11 +23,11 @@ import co.za.sandabakery.io.entity.UserEntity;
 import co.za.sandabakery.respositories.CustomerRepository;
 import co.za.sandabakery.respositories.RoleRepository;
 
-import co.za.sandabakery.service.CustomerService;
+import co.za.sandabakery.service.UserService;
 import co.za.sandabakery.shared.dto.utils.Utils;
 import co.za.sandabakery.ui.model.requests.SignUpUser;
 import co.za.sandabakery.ui.model.requests.UserLogIn;
-import co.za.sandabakery.ui.model.responses.CustomerModelResp;
+import co.za.sandabakery.ui.model.responses.UserModelResp;
 import co.za.sandabakery.ui.model.responses.ErrorMessages;
 
 import co.za.sandabakery.io.entity.Role;
@@ -40,7 +40,7 @@ import co.za.sandabakery.io.entity.Role;
 
 @Service 
 @Component
-public class CustomerServiceImple implements CustomerService {
+public class UserServiceImple implements UserService {
 	
 	
 	@Autowired
@@ -62,7 +62,7 @@ public class CustomerServiceImple implements CustomerService {
 
 	//register user on system
 	@Override
-	public CustomerModelResp createCustomer(SignUpUser systemUser) {
+	public UserModelResp createUser(SignUpUser systemUser) {
 		
 		
 		ModelMapper modelMapper =new ModelMapper();
@@ -126,12 +126,12 @@ public class CustomerServiceImple implements CustomerService {
 		
 		
 		
-		return modelMapper.map(custRepository.save(customer), CustomerModelResp.class);
+		return modelMapper.map(custRepository.save(customer), UserModelResp.class);
 	}
 
 	//updates the user based on  id
 	@Override
-	public CustomerModelResp updateCustomer(String customerId,SignUpUser customer) {
+	public UserModelResp updateUser(String customerId,SignUpUser customer) {
 		
 		UserEntity user=custRepository.findByCustomerId(customerId);
 		
@@ -151,7 +151,7 @@ public class CustomerServiceImple implements CustomerService {
 		
 		
 		
-		return modelMapper.map(custRepository.save(user), CustomerModelResp.class);
+		return modelMapper.map(custRepository.save(user), UserModelResp.class);
 	}
 
 	
@@ -159,7 +159,7 @@ public class CustomerServiceImple implements CustomerService {
 	//delete user based on id
 	
 	@Override
-	public String deleteCustomer(String customerId) {
+	public String deleteUser(String customerId) {
 		
 		UserEntity customerToDelete=custRepository.findByCustomerId(customerId);
 		
@@ -178,7 +178,7 @@ public class CustomerServiceImple implements CustomerService {
 	
 	//retrives all users
 	@Override
-	public List<UserEntity> getCustomers(int page, int limit) {
+	public List<UserEntity> getUsers(int page, int limit) {
 		
 		Pageable pageReq=PageRequest.of(page, limit);
 		
@@ -192,7 +192,7 @@ public class CustomerServiceImple implements CustomerService {
 
 	//retrieves single user based on given id
 	@Override
-	public UserEntity getCustomer(String customerId) {
+	public UserEntity getUser(String customerId) {
 		
 		 UserEntity customer=custRepository.findByCustomerId(customerId);
 		 
@@ -206,7 +206,7 @@ public class CustomerServiceImple implements CustomerService {
 
 	//retreives user by email
 	@Override
-	public UserEntity getCustomerByEmail(String emailAddress) {
+	public UserEntity getUserByEmail(String emailAddress) {
 		// TODO Auto-generated method stub
 		UserEntity customer =custRepository.findByEmailAddress(emailAddress);
 		
@@ -219,7 +219,7 @@ public class CustomerServiceImple implements CustomerService {
 	@Override
 	public boolean isLoggedIn(UserLogIn loginDetails) {
 		// TODO Auto-generated method stub
-		 UserEntity customer=getCustomerByEmail(loginDetails.getEmailAddress());	
+		 UserEntity customer=getUserByEmail(loginDetails.getEmailAddress());	
 		
 		  if(customer!=null) {
 			  encoder.matches(loginDetails.getPassword(), customer.getPassword());

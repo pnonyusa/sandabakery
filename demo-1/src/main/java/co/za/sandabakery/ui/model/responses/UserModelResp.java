@@ -4,7 +4,7 @@ package co.za.sandabakery.ui.model.responses;
 
 
 
-public class CustomerModelResp {
+public class UserModelResp {
 	
 	
 	
@@ -33,13 +33,13 @@ public class CustomerModelResp {
 	
 
 
-	public CustomerModelResp() {
+	public UserModelResp() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 
-	public CustomerModelResp(String customerId, String lastName, String firstName, String emailAddress,
+	public UserModelResp(String customerId, String lastName, String firstName, String emailAddress,
 			String cellNumber, AddressModelResp address,String password) {
 		super();
 		this.customerId = customerId;

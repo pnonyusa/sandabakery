@@ -25,7 +25,7 @@ public class AddressModelResp {
 
 	private String type;
 	
-	private CustomerModelResp customer;
+	private UserModelResp customer;
 	
 	
 	
@@ -43,7 +43,7 @@ public class AddressModelResp {
 	}
 
 	public AddressModelResp(String addressId, String city, String streetName, String postalCode, String country,
-			String type, CustomerModelResp customer) {
+			String type, UserModelResp customer) {
 		super();
 		this.addressId = addressId;
 		this.city = city;
@@ -102,11 +102,11 @@ public class AddressModelResp {
 		this.type = type;
 	}
 
-	public CustomerModelResp getCustomer() {
+	public UserModelResp getCustomer() {
 		return customer;
 	}
 
-	public void setCustomer(CustomerModelResp customer) {
+	public void setCustomer(UserModelResp customer) {
 		this.customer = customer;
 	}
 	
