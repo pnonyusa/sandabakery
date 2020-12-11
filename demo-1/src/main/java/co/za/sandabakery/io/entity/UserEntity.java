@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 @Entity(name="customers")
-public class CustomerEntity implements Serializable {
+public class UserEntity implements Serializable {
 
 	/**
 	 * 
@@ -81,7 +81,7 @@ public class CustomerEntity implements Serializable {
     @JoinTable(name="tbl_user_role", joinColumns= {@JoinColumn(name="customers_id")},inverseJoinColumns= {@JoinColumn(name="roles_id")})
     private Set<Role> roles;
 
-	public CustomerEntity() {
+	public UserEntity() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -96,7 +96,7 @@ public class CustomerEntity implements Serializable {
 
 
 
-	public CustomerEntity(Long id, String customerId, String lastName, String firstName, String emailAddress,
+	public UserEntity(Long id, String customerId, String lastName, String firstName, String emailAddress,
 			String cellNumber, String password, String encryptedPassword, String emailVerificationToken,
 			Boolean emailVerificationStatus, List<Order> orders, AddressEntity address, Set<Role> roles) {
 		super();

@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import co.za.sandabakery.io.entity.CustomerEntity;
+import co.za.sandabakery.io.entity.UserEntity;
 import co.za.sandabakery.respositories.CustomerRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +23,7 @@ public class UserPrincipalService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String emailAddress) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
 		
-		CustomerEntity user=customerRepo.findByEmailAddress(emailAddress);
+		UserEntity user=customerRepo.findByEmailAddress(emailAddress);
 				
 				
 		if (user == null)

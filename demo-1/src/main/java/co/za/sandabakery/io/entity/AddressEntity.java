@@ -49,7 +49,7 @@ public class AddressEntity implements Serializable{
 	@OneToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "customers_id", nullable = false)
 	@JsonBackReference
-	private CustomerEntity customer;
+	private UserEntity customer;
 	
 	
 	
@@ -61,7 +61,7 @@ public class AddressEntity implements Serializable{
 
 
 	public AddressEntity(Long id, String addressId, String city, String streetName, String postalCode, String country,
-			String type, CustomerEntity customer) {
+			String type, UserEntity customer) {
 		super();
 		this.id = id;
 		this.addressId = addressId;
@@ -156,12 +156,12 @@ public class AddressEntity implements Serializable{
 	}
 
 
-	public CustomerEntity getCustomer() {
+	public UserEntity getCustomer() {
 		return customer;
 	}
 
 
-	public void setCustomer(CustomerEntity customer) {
+	public void setCustomer(UserEntity customer) {
 		this.customer = customer;
 	}
 	

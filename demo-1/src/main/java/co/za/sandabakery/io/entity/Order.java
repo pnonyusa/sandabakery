@@ -45,7 +45,7 @@ public class Order implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "customers_id", nullable = false)
 	
-	private CustomerEntity customer;
+	private UserEntity customer;
 	
 	
 	 @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -77,7 +77,7 @@ public class Order implements Serializable {
 
 
 	public Order(Long id, String orderId, String orderStatus, Date orderd, Date dateRecieved, double orderTotal,
-			CustomerEntity customer, ProductEntity product) {
+			UserEntity customer, ProductEntity product) {
 		super();
 		this.id = id;
 		this.orderId = orderId;
@@ -150,12 +150,12 @@ public class Order implements Serializable {
 	}
 
 
-	public CustomerEntity getCustomer() {
+	public UserEntity getCustomer() {
 		return customer;
 	}
 
 
-	public void setCustomer(CustomerEntity customer) {
+	public void setCustomer(UserEntity customer) {
 		this.customer = customer;
 	}
 

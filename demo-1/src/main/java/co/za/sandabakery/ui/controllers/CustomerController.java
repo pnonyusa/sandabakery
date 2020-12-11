@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
-import co.za.sandabakery.io.entity.CustomerEntity;
+import co.za.sandabakery.io.entity.UserEntity;
 import co.za.sandabakery.security.jwt.JwtProvider;
 import co.za.sandabakery.security.jwt.response.JwtResponse;
 import co.za.sandabakery.service.CustomerService;
@@ -86,7 +86,7 @@ public class CustomerController {
 	
 	
 	@GetMapping(path="/admin",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
-	public List<CustomerEntity> getCustomers(@RequestParam(value="page",defaultValue="0") int page, @RequestParam(value="limit",defaultValue="15") int limit){
+	public List<UserEntity> getCustomers(@RequestParam(value="page",defaultValue="0") int page, @RequestParam(value="limit",defaultValue="15") int limit){
 		
 		return customerService.getCustomers(page, limit) ;
 		
@@ -95,9 +95,9 @@ public class CustomerController {
 	
 	@GetMapping(path="/admin/{customerId}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
 	@ResponseBody
-	public ResponseEntity<CustomerEntity> getCustomer(@PathVariable String customerId){
+	public ResponseEntity<UserEntity> getCustomer(@PathVariable String customerId){
 		
-		return new ResponseEntity<CustomerEntity>(customerService.getCustomer(customerId),HttpStatus.OK) ;
+		return new ResponseEntity<UserEntity>(customerService.getCustomer(customerId),HttpStatus.OK) ;
 		
 	}
 	

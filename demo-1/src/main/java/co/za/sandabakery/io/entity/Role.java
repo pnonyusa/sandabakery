@@ -44,15 +44,15 @@ public class Role implements Serializable {
 	
 	
 	 @ManyToMany(mappedBy="roles")
-	 private Set<CustomerEntity> user;
+	 private Set<UserEntity> user;
 
 	
 
-	public Set<CustomerEntity> getUser() {
+	public Set<UserEntity> getUser() {
 		return user;
 	}
 
-	public void setUser(Set<CustomerEntity> user) {
+	public void setUser(Set<UserEntity> user) {
 		this.user = user;
 	}
 

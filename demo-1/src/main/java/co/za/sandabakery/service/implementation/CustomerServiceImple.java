@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 import co.za.sandabakery.exceptions.UserServiceException;
 import co.za.sandabakery.io.entity.AddressEntity;
-import co.za.sandabakery.io.entity.CustomerEntity;
+import co.za.sandabakery.io.entity.UserEntity;
 import co.za.sandabakery.respositories.CustomerRepository;
 import co.za.sandabakery.respositories.RoleRepository;
 
@@ -66,7 +66,7 @@ public class CustomerServiceImple implements CustomerService {
 		
 		
 		ModelMapper modelMapper =new ModelMapper();
-		CustomerEntity customer=new CustomerEntity();
+		UserEntity customer=new UserEntity();
 		AddressEntity address=new AddressEntity();
 		Set<Role> roles = new HashSet<>();
 	
@@ -133,7 +133,7 @@ public class CustomerServiceImple implements CustomerService {
 	@Override
 	public CustomerModelResp updateCustomer(String customerId,SignUpUser customer) {
 		
-		CustomerEntity user=custRepository.findByCustomerId(customerId);
+		UserEntity user=custRepository.findByCustomerId(customerId);
 		
 		ModelMapper modelMapper =new ModelMapper();
 		
@@ -161,7 +161,7 @@ public class CustomerServiceImple implements CustomerService {
 	@Override
 	public String deleteCustomer(String customerId) {
 		
-		CustomerEntity customerToDelete=custRepository.findByCustomerId(customerId);
+		UserEntity customerToDelete=custRepository.findByCustomerId(customerId);
 		
 		if(customerToDelete==null)
 			throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessages());
@@ -178,13 +178,13 @@ public class CustomerServiceImple implements CustomerService {
 	
 	//retrives all users
 	@Override
-	public List<CustomerEntity> getCustomers(int page, int limit) {
+	public List<UserEntity> getCustomers(int page, int limit) {
 		
 		Pageable pageReq=PageRequest.of(page, limit);
 		
-		Page<CustomerEntity>customerEntity=custRepository.findAll(pageReq);
+		Page<UserEntity>customerEntity=custRepository.findAll(pageReq);
 		
-		List<CustomerEntity> customers=customerEntity.getContent();
+		List<UserEntity> customers=customerEntity.getContent();
 		
 		// TODO Auto-generated method stub
 		return customers;
@@ -192,9 +192,9 @@ public class CustomerServiceImple implements CustomerService {
 
 	//retrieves single user based on given id
 	@Override
-	public CustomerEntity getCustomer(String customerId) {
+	public UserEntity getCustomer(String customerId) {
 		
-		 CustomerEntity customer=custRepository.findByCustomerId(customerId);
+		 UserEntity customer=custRepository.findByCustomerId(customerId);
 		 
 		 if(customer==null)throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessages());
 		
@@ -206,9 +206,9 @@ public class CustomerServiceImple implements CustomerService {
 
 	//retreives user by email
 	@Override
-	public CustomerEntity getCustomerByEmail(String emailAddress) {
+	public UserEntity getCustomerByEmail(String emailAddress) {
 		// TODO Auto-generated method stub
-		CustomerEntity customer =custRepository.findByEmailAddress(emailAddress);
+		UserEntity customer =custRepository.findByEmailAddress(emailAddress);
 		
 		if(customer==null)throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessages());
 		
@@ -219,7 +219,7 @@ public class CustomerServiceImple implements CustomerService {
 	@Override
 	public boolean isLoggedIn(UserLogIn loginDetails) {
 		// TODO Auto-generated method stub
-		 CustomerEntity customer=getCustomerByEmail(loginDetails.getEmailAddress());	
+		 UserEntity customer=getCustomerByEmail(loginDetails.getEmailAddress());	
 		
 		  if(customer!=null) {
 			  encoder.matches(loginDetails.getPassword(), customer.getPassword());

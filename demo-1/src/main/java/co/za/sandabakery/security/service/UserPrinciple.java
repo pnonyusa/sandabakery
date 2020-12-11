@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 
 
-import co.za.sandabakery.io.entity.CustomerEntity;
+import co.za.sandabakery.io.entity.UserEntity;
 import co.za.sandabakery.io.entity.Role;
 
 public class UserPrinciple implements UserDetails {
@@ -19,12 +19,12 @@ public class UserPrinciple implements UserDetails {
 	  private static final long serialVersionUID = 1L;
 	  
 	  
-	private CustomerEntity customer;
+	private UserEntity customer;
 	
 	
 	
 
-	public UserPrinciple(CustomerEntity customer) {
+	public UserPrinciple(UserEntity customer) {
 		this.customer = customer;
 	}
 
