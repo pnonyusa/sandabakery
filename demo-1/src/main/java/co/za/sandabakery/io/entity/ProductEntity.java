@@ -40,7 +40,7 @@ public class ProductEntity implements Serializable {
     private String productDescription;
     
     
-    @ManyToOne
+    @ManyToOne(cascade= {CascadeType.DETACH,CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REFRESH})
     @JoinColumn(name="category_id",nullable= false)
     private ProductCategory category;
     

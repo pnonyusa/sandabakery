@@ -34,11 +34,12 @@ public class ProductServiceImple implements  ProductService {
 		
 		if(product==null)throw new NullPointerException(ErrorMessages.OBJECT_IS_NULL.getErrorMessages());
 		
-		
+		ProductCategory category=product.getCategory();
 		product.setProductId(new Utils().generateUserId(11));
 		product.getCategory().setProductCategoryId(new Utils().generateUserId(10));
-
-     		
+		category.add(product);
+		product.setCategory(category);
+		
 		return modelMapper.map(productRepository.save(product),ProductModelRespo.class);
 	}
 

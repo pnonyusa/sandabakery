@@ -1,7 +1,9 @@
 package co.za.sandabakery.io.entity;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -30,8 +32,9 @@ public class ProductCategory implements Serializable {
 	
 	
 	
-	@OneToMany(cascade=CascadeType.ALL,mappedBy="category")
-	private Set<ProductEntity> products;
+	@OneToMany(cascade= {CascadeType.DETACH,CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REFRESH},
+			mappedBy="category")
+	private List<ProductEntity> products;
 
 
 
@@ -39,7 +42,7 @@ public class ProductCategory implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ProductCategory(Long id, String productCategoryId, String categoryName, Set<ProductEntity> products) {
+	public ProductCategory(Long id, String productCategoryId, String categoryName, List<ProductEntity> products) {
 		super();
 		this.id = id;
 		this.productCategoryId = productCategoryId;
@@ -84,18 +87,27 @@ public class ProductCategory implements Serializable {
 
 
 
-	public Set<ProductEntity> getProducts() {
+	public List<ProductEntity> getProducts() {
 		return products;
 	}
 
 
 
-	public void setProducts(Set<ProductEntity> products) {
+	public void setProducts(List<ProductEntity> products) {
 		this.products = products;
 	}
 	
 	
-	
+	//add convience method for bi-directional
+	public void add(ProductEntity tempProd) {
+		
+		if(products==null) {
+			products=new ArrayList<>();
+		} 
+		
+		products.add(tempProd);
+		tempProd.setCategory(this); 
+	}
 	
 
 }
