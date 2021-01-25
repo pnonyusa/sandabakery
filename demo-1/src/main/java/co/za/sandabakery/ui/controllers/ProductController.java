@@ -27,7 +27,7 @@ import co.za.sandabakery.service.ProductService;
 import co.za.sandabakery.ui.model.responses.ProductModelRespo;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("product")
 public class ProductController {
 	
 	

@@ -1,9 +1,11 @@
 package co.za.sandabakery.ui.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,13 +18,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import co.za.sandabakery.io.entity.ProductEntity;
 import co.za.sandabakery.io.entity.UserEntity;
 import co.za.sandabakery.security.jwt.JwtProvider;
 import co.za.sandabakery.security.jwt.response.JwtResponse;
 import co.za.sandabakery.service.UserService;
 import co.za.sandabakery.ui.model.requests.SignUpUser;
 import co.za.sandabakery.ui.model.requests.UserLogIn;
+import co.za.sandabakery.ui.model.responses.ProductModelRespo;
 import co.za.sandabakery.ui.model.responses.UserModelResp;
 
 import org.springframework.http.HttpStatus;
@@ -53,7 +56,7 @@ public class UserController {
 	}
 	
 	
-	@PutMapping(path = "/user/update/{id}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
+	@PutMapping(path = "/admin/update/{id}",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
 	public ResponseEntity<UserModelResp>  updateCustomer(@PathVariable String id,@RequestBody SignUpUser customer ) {
 		
 		return new ResponseEntity<UserModelResp>(customerService.updateUser(id, customer),HttpStatus.OK);
@@ -66,6 +69,7 @@ public class UserController {
 		JwtResponse myToken=new JwtResponse();
 		if(customerService.isLoggedIn(loginCredetials)) {
 			
+			myToken.setRoles(customerService.getRoles(loginCredetials));
 			String token=jwtProvider.generateToken(loginCredetials.getEmailAddress());
 			myToken.setAccessToken(token);
 			return myToken;
@@ -85,10 +89,22 @@ public class UserController {
 	
 	
 	
-	@GetMapping(path="/admin",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
-	public List<UserEntity> getCustomers(@RequestParam(value="page",defaultValue="0") int page, @RequestParam(value="limit",defaultValue="15") int limit){
+	@GetMapping(path="/admin/all",consumes = { MediaType.ALL_VALUE }, produces = { MediaType.ALL_VALUE })
+	public List<UserModelResp> getCustomers(){
 		
-		return customerService.getUsers(page, limit) ;
+		   ModelMapper modelMapper =new ModelMapper();
+		    
+		    List<UserModelResp> responseModel=new ArrayList<>();
+		    
+		    List<UserEntity> users=customerService.getUsers();
+		    
+		    
+		    for(int i=0;i<users.size();i++) {
+		    	responseModel.add(i, modelMapper.map(users.get(i), UserModelResp.class));
+		    }
+		    
+		
+		return responseModel;
 		
 	}
 	

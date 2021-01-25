@@ -7,12 +7,15 @@ package co.za.sandabakery.service.implementation;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -22,7 +25,7 @@ import co.za.sandabakery.io.entity.AddressEntity;
 import co.za.sandabakery.io.entity.UserEntity;
 import co.za.sandabakery.respositories.CustomerRepository;
 import co.za.sandabakery.respositories.RoleRepository;
-
+import co.za.sandabakery.security.service.UserPrinciple;
 import co.za.sandabakery.service.UserService;
 import co.za.sandabakery.shared.dto.utils.Utils;
 import co.za.sandabakery.ui.model.requests.SignUpUser;
@@ -54,7 +57,8 @@ public class UserServiceImple implements UserService {
 	PasswordEncoder encoder;
 	
 	
-	
+	@Autowired
+	AuthenticationManager authenticationManager;
 	
 	
 	
@@ -178,16 +182,16 @@ public class UserServiceImple implements UserService {
 	
 	//retrives all users
 	@Override
-	public List<UserEntity> getUsers(int page, int limit) {
+	public List<UserEntity> getUsers() {
 		
-		Pageable pageReq=PageRequest.of(page, limit);
 		
-		Page<UserEntity>customerEntity=custRepository.findAll(pageReq);
 		
-		List<UserEntity> customers=customerEntity.getContent();
+		List<UserEntity>customerEntity=(List<UserEntity>) custRepository.findAll();
+		
+		
 		
 		// TODO Auto-generated method stub
-		return customers;
+		return customerEntity;
 	}
 
 	//retrieves single user based on given id
@@ -230,6 +234,24 @@ public class UserServiceImple implements UserService {
 		
 		
 		return false;
+	}
+
+	
+	//finish this tommorrow
+	@Override
+	public List<String> getRoles(UserLogIn loginDetails) {
+		Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(loginDetails.getEmailAddress(), loginDetails.getPassword()));
+		
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		
+		UserPrinciple userDetails=(UserPrinciple) authentication.getPrincipal();
+		
+		List<String> roles = userDetails.getAuthorities().stream()
+				.map(item -> item.getAuthority())
+				.collect(Collectors.toList());
+		
+		return roles;
 	}
 
 }

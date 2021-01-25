@@ -15,8 +15,10 @@ public interface UserService  {
 	boolean isLoggedIn(UserLogIn loginDetails);
 	UserModelResp updateUser(String customerId,SignUpUser user);
 	String deleteUser(String customerId);
-	List<UserEntity> getUsers(int page,int limit);
+	List<UserEntity> getUsers();
 	UserEntity getUser(String customerId);
 	UserEntity getUserByEmail(String emailAddress);
+	
+	List<String> getRoles(UserLogIn loginDetails);
 
 }

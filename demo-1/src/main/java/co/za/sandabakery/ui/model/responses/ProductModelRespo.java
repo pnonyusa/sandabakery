@@ -14,7 +14,7 @@ public class ProductModelRespo {
     
     
     
-    private String productCategory;
+    private ProductCategoryResponse category;
     
     
     private String productRating;
@@ -77,13 +77,7 @@ public class ProductModelRespo {
 		this.productDescription = productDescription;
 	}
 
-	public String getProductCategory() {
-		return productCategory;
-	}
-
-	public void setProductCategory(String productCategory) {
-		this.productCategory = productCategory;
-	}
+	
 
 	public String getProductRating() {
 		return productRating;
@@ -108,11 +102,16 @@ public class ProductModelRespo {
 	public void setQuantityOnHand(int quantityOnHand) {
 		this.quantityOnHand = quantityOnHand;
 	}
-    
-    
-    
-    
-    
-	
 
+	public ProductCategoryResponse getCategory() {
+		return category;
+	}
+
+	public void setCategory(ProductCategoryResponse category) {
+		this.category = category;
+	}
+    
+    
+    
+ 
 }
